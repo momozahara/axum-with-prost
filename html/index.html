@@ -1,0 +1,58 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+    }
+
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    <div>
+      <h1>Book Form</h1>
+      <p>Update or Insert element.</p>
+      <form>
+        <section>
+          <i style="color: red;">*</i>
+          <label for="form-title">Title-</label>
+          <input id="form-title" type="number" onkeydown="onUpsert(event, false)">
+        </section>
+        <section>
+          <i style="color: red;">*</i>
+          <label for="form-pages">Pages</label>
+          <input id="form-pages" type="number" onkeydown="onUpsert(event, false)">
+        </section>
+        <section>
+          <p>Status: <span id="form-status">None</span></p>
+        </section>
+        <button id="form-button" type="button" onclick="onUpsert(undefined, true)">Upsert</button>
+        <i style="color: red;">* required</i>
+      </form>
+    </div>
+    <div>
+      <div id="books"></div>
+      <section id="pagination">
+        <span style="cursor: pointer;" onclick="onPagination(false, undefined, undefined)">Prev</span>
+        <input id="pagination-input" type="number" style="max-width: 4rem;"
+          onkeydown="onPagination(false, this, event)"> / <span id="pages-count">0</span>
+        <span style="cursor: pointer;" onclick="onPagination(true, undefined, undefined)">Next</span>
+        <p style="cursor: pointer;" onclick="loadBooks()">Reload</p>
+        <p style="cursor: pointer;" onclick="onSort()">Sort</p>
+      </section>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/protobufjs@7.X.X/dist/protobuf.js"></script>
+  <script src="/script.js"></script>
+</body>
+
+</html>
