@@ -2,7 +2,7 @@ use axum::{
     extract::{Path, Query, State},
     http::StatusCode,
     response::IntoResponse,
-    routing::{get, patch, put},
+    routing::{get, patch},
     Router,
 };
 use prost::Message;
@@ -22,8 +22,7 @@ pub fn api_route(shared_state: Arc<AppState>) -> Router {
 
 fn book_route(shared_state: Arc<AppState>) -> Router {
     Router::default()
-        .route("/:title", get(get_book_hander))
-        .route("/:title/:pages", put(put_book_handler))
+        .route("/:title", get(get_book_hander).put(put_book_handler))
         .with_state(shared_state)
 }
 
@@ -58,9 +57,17 @@ async fn get_book_hander(
 
 async fn put_book_handler(
     State(shared_state): State<Arc<AppState>>,
-    Path((title, pages)): Path<(String, u32)>,
+    Path(title): Path<String>,
+    body: String,
 ) -> impl IntoResponse {
     let mut books_reader = shared_state.books.write().unwrap();
+
+    let parse_result = body.parse::<u32>();
+    if parse_result.is_err() {
+        return (StatusCode::BAD_REQUEST).into_response();
+    }
+
+    let pages = parse_result.unwrap();
 
     match books_reader.get_mut(&title) {
         Some(book) => {

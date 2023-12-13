@@ -67,8 +67,9 @@ function onUpsert(e, isButton) {
   }
 
   formButton.disabled = true;
-  fetch(`/api/book/title-${formTitle.value}/${formPages.value}`, {
-    method: "PUT"
+  fetch(`/api/book/title-${formTitle.value}`, {
+    method: "PUT",
+    body: formPages.value,
   })
     .then((response) => {
       if (response.status !== 200 && response.status !== 304) {
